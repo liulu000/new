@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<style type="text/css">
+			*{
+				margin:0;
+				padding:0;
+			}
+			
+			.out{
+				width: 60%;
+				margin: 0 auto;
+				background: white;
+		        overflow: hidden;
+			}
+			
+			ul,li{
+				list-style: none;
+			}
+			
+			.top{
+				width: 100%;
+				overflow: hidden;
+				/*padding: 10px 0;*/
+				border-bottom: 1px solid black;
+				box-sizing: border-box;
+			}
+			
+			.top li{
+				float: left;
+				width: 24%;
+				text-align: center;
+				padding: 10px 0;
+			}
+			
+			top li:hover{
+				border-bottom: 1px solid yellow;
+			}
+			
+			.bottom{
+				width: 100%;
+				overflow: hidden;
+				padding: 10px 0;
+			}
+			
+			.bottom_list{
+				width: 100%;
+				overflow: hidden;
+				padding: 10px 0;
+			}
+			
+			.left{
+				width: 25%;
+				float: left;
+			}
+			
+			.left img{
+				width: 100%;
+			}
+			
+			.right{
+				width: 73%;
+				float: right;
+			}
+			
+			.right p span{
+				margin-left: 10px;
+				background: white;
+				border-radius: 5px;
+				padding: 5px 6px;
+				font-size: 14px;
+			}
+			
+			.mennban{
+				width:20%;
+				position: absolute;
+				left:300px;
+				top:100px;
+				display: none;
+				height: 30px;
+			}
+			
+			
+		</style>
+		<script type="text/javascript" src="js/angular.min.js"></script>
+		<script type="text/javascript" src="js/angular-route.min.js"></script>
+		<script type="text/javascript" src="js/jquery.min.js"></script>
+	</head>
+	<body ng-app="myApp">
+		<div class="out" ng-controller="myCtr">
+			<ul class="top">
+				<li ng-click="sort1()">今日特卖</li>
+				<li ng-click="sort2()">热销榜</li>
+				<li ng-click="sort3()">天天特价</li>
+				<li ng-click="sort4()">牛奶面包</li>
+			</ul>
+			<input type="text"  class="mennban"/>
+			<div class="bottom">
+				<div class="bottom_list"  ng-repeat="obb in arr2">
+					<div class="left" >
+						<img ng-src="{{obb.img}}"/>
+					</div>
+					<div class="right">
+						<h3>{{obb.name}}</h3>
+						<p>{{obb.price}}<span>购买</span></p>
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>
+	<script type="text/javascript">
+		var app=angular.module("myApp",[]);
+		app.controller("myCtr",function($scope,$http){
+			$scope.arr1=["今日特米","热销榜","天天特价","牛奶面包"];
+			$scope.url="01";
+			$scope.arr2=[];
+			function fn(){
+				$http({
+				url:"http://127.0.0.1:8081/"+$scope.url,
+				method:"get",
+				data:"",
+			}).success(function(data){
+				console.log(data);
+				$scope.arr2=data;
+				console.log($scope.arr2);
+			})
+			
+			}
+			fn();
+			var bol=true;
+			$scope.sort1=function(){
+				$scope.url="01";
+				fn();
+				$(".top li").css({"border-bottom":"1px solid white"});
+				$($(".top li")[0]).css({"border-bottom":"2px solid orange"})
+				if(bol){
+				$(".mennban").css({display:"block"});
+				$(".mennban").val("今日特卖");
+				
+				bol=false;
+				}else{
+				$(".mennban").css({display:"none"});
+				bol=true;
+				}	
+			}
+			$scope.sort2=function(){
+				$scope.url="02";
+				fn();
+				$(".top li").css({"border-bottom":"1px solid white"});
+				$($(".top li")[1]).css({"border-bottom":"2px solid orange"})
+				
+				if(bol){
+				$(".mennban").css({display:"block"});
+				$(".mennban").val("热销榜");
+				
+				bol=false;
+				}else{
+				$(".mennban").css({display:"none"});
+				bol=true;
+				}
+			}
+			$scope.sort3=function(){
+				$scope.url="03";
+				fn();
+				$(".top li").css({"border-bottom":"1px solid white"});
+				$($(".top li")[2]).css({"border-bottom":"2px solid orange"})
+				
+				if(bol){
+				$(".mennban").css({display:"block"});
+				$(".mennban").val("天天特价");
+				
+				bol=false;
+				}else{
+				$(".mennban").css({display:"none"});
+				bol=true;
+				}
+			}
+			$scope.sort4=function(){
+				$scope.url="04";
+				fn();
+				$(".top li").css({"border-bottom":"1px solid white"});
+				$($(".top li")[3]).css({"border-bottom":"2px solid orange"})
+				
+				if(bol){
+				$(".mennban").css({display:"block"});
+				$(".mennban").val("牛奶面包");
+				
+				bol=false;
+				}else{
+				$(".mennban").css({display:"none"});
+				bol=true;
+				}
+			}
+			
+		})
+	</script>
+</html>
